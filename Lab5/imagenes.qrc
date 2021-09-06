@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>images/puerta/puerta.png</file>
+        <file>images/muro/muro_explotando6.png</file>
+        <file>images/muro/muro_explotando5.png</file>
+        <file>images/muro/muro_explotando4.png</file>
+        <file>images/muro/muro_explotando3.png</file>
+        <file>images/muro/muro_explotando2.png</file>
+        <file>images/muro/muro_explotando1.png</file>
+        <file>images/muro/muro_level_1.png</file>
+        <file>images/pilar/Pilar.png</file>
+        <file>images/o_neal/neal_frontal_muerto.png</file>
+        <file>images/o_neal/neal_frontal_izquierda2.png</file>
+        <file>images/o_neal/neal_frontal_izquierda1.png</file>
+        <file>images/o_neal/neal_frontal_izquierda.png</file>
+        <file>images/o_neal/neal_frontal_derecha2.png</file>
+        <file>images/o_neal/neal_frontal_derecha1.png</file>
+        <file>images/o_neal/neal_frontal_derecha.png</file>
+        <file>images/valcom/Valcom_X_fin.png</file>
+        <file>images/valcom/Valcom_X_1.png</file>
+        <file>images/valcom/Valcom_X.png</file>
+        <file>images/valcom/Valcom_explotando_deformado.png</file>
+        <file>images/valcom/Valcom_explotando_ojos.png</file>
+        <file>images/valcom/Valcom_frontal_derecha.png</file>
+        <file>images/valcom/Valcom_explotando_derecha.png</file>
+        <file>images/valcom/Valcom_explotando_final_derecha.png</file>
+        <file>images/valcom/Valcom_explotando_final.png</file>
+        <file>images/valcom/Valcom_explotando.png</file>
+        <file>images/valcom/Valcom_frontal.png</file>
+    </qresource>
+</RCC>
