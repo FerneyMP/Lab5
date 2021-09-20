@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/new/prefix1">
-        <file>imagenes/bloques.png</file>
-        <file>../../../Lab 5/Enemigo 1/enemigo.png</file>
-    </qresource>
-</RCC>
