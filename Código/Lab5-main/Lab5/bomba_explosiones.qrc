@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>imagenes/bomba.png</file>
+        <file>imagenes/explosion_horizontal.png</file>
+        <file>imagenes/explosion_vertical.png</file>
+    </qresource>
+    <qresource prefix="/new/prefix2">
+        <file>imagenes/bomberman.png</file>
+    </qresource>
+</RCC>
