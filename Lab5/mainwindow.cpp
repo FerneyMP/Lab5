@@ -7,6 +7,9 @@ MainWindow::MainWindow(QWidget *parent)
 {   //MainWindow modifica la interfaz principal  ---------------------------> IMPORTANTE
 
     ui->setupUi(this);
+    //time = new QTimer;
+    //connect(time,SIGNAL(timeout()),this,SLOT(cambio()));
+    //time->start(5000);
     scene = new QGraphicsScene;
     //Se le agregan las dimensiones del graphicsView
     ui->graphicsView->setGeometry(0,0,tam*columnas+2,tam*(filas+2)+2);
@@ -29,11 +32,10 @@ MainWindow::~MainWindow()
     delete scene;
     delete puntaje;
     delete mapa;
-    delete time;
+    //delete time;
 
     delete personaje_;
-    delete enemy2;
-    delete enemy3;
+   // delete enemy2;
     delete door;
     delete bombX;
 }
@@ -51,9 +53,6 @@ void MainWindow::generar_mapa()
     personaje_ = new personaje;
     //Para las condificones del personaje principal:
 
-    //Para el enemigo2
-    enemy2 = new enemigo2;
-    enemy3 = new enemigo2;
 
     //Puerta
     door = new Puerta;
@@ -80,40 +79,49 @@ void MainWindow::generar_mapa()
 
     personaje_->set_scale(tam,tam);
     personaje_->setPos(tam ,3*tam);
-    personaje_->set_imagen(4);
+    personaje_->set_imagen(4,1);
     scene->addItem(personaje_);
 
     //IMPORTANTE: hacer el llamado de los enemigos en mainwindow
     //Nueva idea: Generar 5 parejas de posiciones para 5 enemigos (5 cantidad de enemigos por mapa)
+
     int enemyX, enemyY, doorX, doorY;
 
-    enemyX = generar_enemyX();
-    enemyY = generar_enemyY();
+    for (int i=0; i<cantidad_enemigos;i++){
+        enemy1[i] = new enemigo1;
+        enemyX = generar_enemyX();
+        enemyY = generar_enemyY();
 
-    enemy2->set_scale(tam,tam);
-    enemy2->setPos(enemyX*tam, enemyY*tam); //Posicionamiento
-    enemy2->set_imagen(4);
-    scene->addItem(enemy2);
-    time = new QTimer;
-    connect(time,SIGNAL(timeout()),this,SLOT(movimientos_enemigos()));
-    time->start(2000);
+        enemy1[i]->set_scale(tam,tam);
+        enemy1[i]->setPos(enemyX*tam, enemyY*tam);
+        enemy1[i]->set_imagen(3);
+        scene->addItem(enemy1[i]);
+
+    }
+
+    for (int i=0; i<cantidad_enemigos;i++){
+        enemy2[i] = new enemigo2;
+        enemyX = generar_enemyX();
+        enemyY = generar_enemyY();
+
+        enemy2[i]->set_scale(tam,tam);
+        enemy2[i]->setPos(enemyX*tam, enemyY*tam);
+        enemy2[i]->set_imagen(4);
+        scene->addItem(enemy2[i]);
+
+    }
 
 
 
-    enemyX = generar_enemyX();
-    enemyY = generar_enemyY();
-    enemy3->set_scale(tam,tam);
-    enemy3->setPos(enemyX*tam, enemyY*tam);
-    enemy3->set_imagen(4);
-    scene->addItem(enemy3);
 
     doorX = generar_enemyX();
     doorY = generar_enemyY();
+
     door->set_scale(tam,tam);
     door->setPos(doorX*tam, doorY*tam);
     door->set_imagen(0);
     scene->addItem(door);
-    //LLEVAR TODO ESTO A UN CONTENEDOR ----> vector
+
 
 }
 
@@ -136,16 +144,20 @@ void MainWindow::keyPressEvent(QKeyEvent *tecla) //movimiento del personaje
 
 
    if (tecla-> key() == Qt:: Key_D && m ->get_value((y/tam)-2,(x+tam-1+5)/tam)==8 && m ->get_value(((y+tam-1)/tam)-2,(x+tam-1+5)/tam)==8) { //sup e inf der
-    personaje_-> setX(personaje_->x()+5);
+       personaje_-> change('d');
+       personaje_-> setX(personaje_->x()+5);
    }
    if (tecla-> key() == Qt:: Key_W && m ->get_value(((y-5)/tam)-2,x/tam)==8 && m ->get_value(((y-5)/tam)-2,(x+tam-1)/tam)==8) {  //arr
+    personaje_-> change('w');
     personaje_-> setY(personaje_->y()-5);
    }
    if (tecla-> key() == Qt:: Key_A && m ->get_value((y/tam)-2,(x-5)/tam)==8 && m ->get_value(((y+tam-1)/tam)-2,(x-5)/tam)==8) {  //izq
-    personaje_-> setX(personaje_->x()-5);
+       personaje_-> change('a');
+       personaje_-> setX(personaje_->x()-5);
    }
    if (tecla-> key() == Qt:: Key_S && m ->get_value(((y+tam-1+5)/tam)-2,(x+tam-1)/tam)==8 && m ->get_value(((y+tam-1+5)/tam)-2,x/tam)==8) { //aba
-   personaje_-> setY(personaje_->y()+5); //se va a mover 5 pixeles
+       personaje_-> change('s');
+       personaje_-> setY(personaje_->y()+5); //se va a mover 5 pixeles
   }
    if (tecla-> key() == Qt::Key_R){
        bombX->set_scale(tam,tam);
@@ -176,23 +188,18 @@ int MainWindow::generar_enemyY()
 
 
 
-
-void MainWindow::movimientos_enemigos()
+/*
+void MainWindow::cambio()
 {
-
-    //m->set_diff(0.4);
-    //m->generar_mapa();
-    //mat = m->get_matriz();
-    //for (int f=0;f<filas ;f++ ) {
-        //for (int c=0;c<columnas ;c++ ) {
-            //mapa[f][c]->set_imagen(mat[f][c]);
-        //}
-    //}
-    desplazamientoX = generar_enemyX();
-    desplazamientoY = generar_enemyY();
-    desplazamientoX += 5;
-    desplazamientoY -= 3;
-}
+    m->set_diff(0.4);
+    m->generar_mapa();
+    mat = m->get_matriz();
+    for (int f=0;f<filas ;f++ ) {
+        for (int c=0;c<columnas ;c++ ) {
+            mapa[f][c]->set_imagen(mat[f][c]);
+        }
+    }
+}*/
 
 /*
 

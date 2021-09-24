@@ -1,11 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <bloques.h>
 #include <QTimer>
 #include <QKeyEvent>
+#include <QList>
 
 #include "matriz.h"
 #include "personaje.h"
@@ -21,6 +21,8 @@
 #define filas 13 //para el mapa
 #define columnas 31 //tamaño del mapa fil y col
 #define tam 50 //50 pixeles
+#define cantidad_enemigos 10
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,8 +42,8 @@ public:
     int generar_enemyX();
     int generar_enemyY();
 
-private slots:
-    void movimientos_enemigos();
+/*private slots:
+    void cambio();*/
 
 private:
     Ui::MainWindow *ui;
@@ -53,15 +55,14 @@ private:
     matriz *m;
     int **mat;
     personaje *personaje_;
-    enemigo2 *enemy2, *enemy3;
+    enemigo1 *enemy1[cantidad_enemigos];
+    enemigo2 *enemy2[cantidad_enemigos];
     Puerta *door;
 
     int **matrixEnemy;
     int aleatorioX, aleatorioY;
     bomba *bombX;
 
-    //Variables de clase para movimiento enemigos
-    int desplazamientoX=0, desplazamientoY=0;
 
 };
 #endif // MAINWINDOW_H

@@ -51,7 +51,6 @@ void matriz::set_diff(float b)
     diff = b;
 }
 
-/*
 int matriz::generar_enemy()
 {
     srand(time(NULL));
@@ -65,7 +64,7 @@ int matriz::generar_enemy()
         //tam2[y]= aleatorioY;
     //}
     return matrixEnemy[aleatorioX][aleatorioY];
-}*/
+}
 
 matriz::~matriz()
 {
