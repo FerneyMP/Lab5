@@ -3,7 +3,7 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <bloques.h>
-#include <QTimer>
+//#include <QTimer>
 #include <QKeyEvent>
 #include <QList>
 
@@ -32,6 +32,11 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+public slots:
+    void change (); //cambio de imagen para el movimiento de la bomba
+    void change_enemies (); //cambio de imagen para el movimiento de los enemigos
+    void erase (int x, int y);
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -42,16 +47,14 @@ public:
     int generar_enemyX();
     int generar_enemyY();
 
-/*private slots:
-    void cambio();*/
 
 private:
     Ui::MainWindow *ui;
     //se crean 31 bloques de flias y 13 de columnas
     //representan todos los elementos dentro del mapa
+
     bloques *puntaje,***mapa;
     QGraphicsScene *scene;
-    QTimer *time;
     matriz *m;
     int **mat;
     personaje *personaje_;
@@ -62,6 +65,10 @@ private:
     int **matrixEnemy;
     int aleatorioX, aleatorioY;
     bomba *bombX;
+
+    int contador=0; // mov
+
+    QTimer *timer;
 
 
 };

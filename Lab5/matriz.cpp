@@ -51,7 +51,7 @@ void matriz::set_diff(float b)
     diff = b;
 }
 
-int matriz::generar_enemy()
+int matriz::generar_enemy()// Por terminar?
 {
     srand(time(NULL));
     //for(int x=0; x<5; x++){
