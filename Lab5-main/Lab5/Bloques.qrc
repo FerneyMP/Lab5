@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>imagenes/bloques.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>personajes.qrc</file>
+    </qresource>
+</RCC>
