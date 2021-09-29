@@ -37,6 +37,8 @@ public slots:
     void change_enemies (); //cambio de imagen para el movimiento de los enemigos
     void erase (int x, int y);
 
+    void movimientos_enemigos();
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -69,7 +71,9 @@ private:
     int contador=0; // mov
 
     QTimer *timer;
-
+    //
+    int desplazamientoX=0, desplazamientoY=0;
+    QTimer *time;
 
 };
 #endif // MAINWINDOW_H

@@ -31,6 +31,8 @@ MainWindow::~MainWindow()
     delete puntaje;
     delete mapa;
     delete timer;
+    delete time;
+
 
     delete personaje_;
    // delete enemy1[]; preguntar
@@ -75,6 +77,8 @@ void MainWindow::generar_mapa()
     personaje_->set_imagen(4,1);
     scene->addItem(personaje_);
 
+    timer = new QTimer(); //
+
     int enemyX, enemyY, doorX, doorY;
     for (int i=0; i<cantidad_enemigos;i++){
         enemy1[i] = new enemigo1;
@@ -92,29 +96,18 @@ void MainWindow::generar_mapa()
 
     }
 
+    connect(time,SIGNAL(timeout()),this,SLOT(movimientos_enemigos()));
+    time->start(1000);
 
-    /*PARA EL SEGUNDO MUNDO
-    for (int i=0; i<cantidad_enemigos;i++){
-        enemy2[i] = new enemigo2;
-        enemyX = generar_enemyX();
-        enemyY = generar_enemyY();
+}
 
-        enemy2[i]->set_scale(tam,tam);
-        enemy2[i]->setPos(enemyX*tam, enemyY*tam);
-        enemy2[i]->set_imagen(4);
-        scene->addItem(enemy2[i]);
-
-    }
-
-    //PARA GENERAR LA PUERTA
-    doorX = generar_enemyX();
-    doorY = generar_enemyY();
-    door->set_scale(tam,tam);
-    door->setPos(doorX*tam, doorY*tam);
-    door->set_imagen(0);
-    scene->addItem(door);*/
-
-
+void MainWindow::movimientos_enemigos(){
+    //desplazamientoX = generar_enemyX();
+   // desplazamientoY = generar_enemyY();
+    //desplazamientoX += 5;
+    //desplazamientoY -= 3;
+    enemy2[0]->setPos(enemy2[0]->x()+25,enemy2[0]->y()-3);
+    //timer dentro de la misma clase (modificar puntero cargado en el graphicsview)
 }
 
 
@@ -214,6 +207,27 @@ int MainWindow::generar_enemyY()
 }
 
 
+/*PARA EL SEGUNDO MUNDO en generar mapa
+for (int i=0; i<cantidad_enemigos;i++){
+    enemy2[i] = new enemigo2;
+    enemyX = generar_enemyX();
+    enemyY = generar_enemyY();
+
+    enemy2[i]->set_scale(tam,tam);
+    enemy2[i]->setPos(enemyX*tam, enemyY*tam);
+    enemy2[i]->set_imagen(4);
+    scene->addItem(enemy2[i]);
+
+}
+
+//PARA GENERAR LA PUERTA
+doorX = generar_enemyX();
+doorY = generar_enemyY();
+door->set_scale(tam,tam);
+door->setPos(doorX*tam, doorY*tam);
+door->set_imagen(0);
+scene->addItem(door);*/
+
 
 /*
 void MainWindow::cambio()
@@ -261,3 +275,5 @@ void MainWindow::cambio()
 
 
 */
+
+
