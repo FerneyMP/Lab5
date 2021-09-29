@@ -31,7 +31,7 @@ MainWindow::~MainWindow()
     delete puntaje;
     delete mapa;
     delete timer;
-    delete time;
+    delete time_enemy1;
 
 
     delete personaje_;
@@ -51,8 +51,11 @@ void MainWindow::generar_mapa()
     //Para el personaje principal:
     personaje_ = new personaje;
 
-    //
-    door = new Puerta;  //Puerta
+    //Puerta
+    door = new Puerta;
+
+    //timer para enemigo 1
+    time_enemy1 = new QTimer;
 
     puntaje->setPos(0,0); //posicionar un elemento donde se desee
     inicializar();
@@ -78,38 +81,39 @@ void MainWindow::generar_mapa()
     scene->addItem(personaje_);
 
     timer = new QTimer(); //
-
-    int enemyX, enemyY, doorX, doorY;
-    for (int i=0; i<cantidad_enemigos;i++){
+    //, doorX, doorY;
+    for (int i=0; i<1;i++){
+        //cantidad_enemigos
         enemy1[i] = new enemigo1;
-        enemyX = generar_enemyX();
-        enemyY = generar_enemyY();
+        enemyX = generar_enemyX(); // 125, 98,  ....45
+        enemyY = generar_enemyY(); // 125, 103, ....70
+        // 1. llamar la funcion ---> se van a mover (referencia)
+        // 2. capturar las dos posiciones (contenedor) --- > llamar la función
+        //generar_movimientos_enemigos(enemyX,enemyY);
 
         enemy1[i]->set_scale(tam,tam);
         enemy1[i]->setPos(enemyX*tam, enemyY*tam);
         enemy1[i]->set_imagen(3);
         scene->addItem(enemy1[i]);
-
-      /*  timer = new QTimer();
-        connect(timer,SIGNAL(timeout()),this,SLOT(change_enemies()));
-        timer-> start (1000);*/
-
+        connect(time_enemy1,SIGNAL(timeout()),this,SLOT(generar_movimientos_enemigos(enemyX, enemyY)));
+        time_enemy1->start(1000);
     }
 
-    connect(time,SIGNAL(timeout()),this,SLOT(movimientos_enemigos()));
-    time->start(1000);
+      //timer = new QTimer();
+     //connect(timer,SIGNAL(timeout()),this,SLOT(change_enemies()));
+     // timer-> start (1000);
+
+    //generar_movimientos_enemigos(enemyX,enemyY);
+    //generar_movimientos_enemigos();
+    //connect(time_enemy1,SIGNAL(timeout()),this,SLOT(generar_movimientos_enemigos()));
+    //connect(time_enemy1,SIGNAL(timeout()),this,SLOT(generar_movimientos_enemigos(enemyX, enemyY)));
+    //time_enemy1->start(1000);
+
+
+    //connect(time_enemy1,SIGNAL(timeout()),this,SLOT(movimientos_enemigos()));
+    //time_enemy1->start(1000);
 
 }
-
-void MainWindow::movimientos_enemigos(){
-    //desplazamientoX = generar_enemyX();
-   // desplazamientoY = generar_enemyY();
-    //desplazamientoX += 5;
-    //desplazamientoY -= 3;
-    enemy2[0]->setPos(enemy2[0]->x()+25,enemy2[0]->y()-3);
-    //timer dentro de la misma clase (modificar puntero cargado en el graphicsview)
-}
-
 
 void MainWindow::inicializar() //Inicializar un puntero a un arreglo de punteros
 {
@@ -196,16 +200,50 @@ int MainWindow::generar_enemyX()
     //srand(time(NULL));
 
     aleatorioX = rand()%(30-3)+3; //(HASTA-DESDE +1)+DESDE
+    if(aleatorioX%2==0){
+        aleatorioX +=1;
+    }
+    //(f%2==0 && c%2==0)
     return aleatorioX;
 }
 
 
 int MainWindow::generar_enemyY()
 {
-     aleatorioY = rand()%(13-5)+5;
+    aleatorioY = rand()%(13-5)+5;
+    if(aleatorioY%2==0){
+        aleatorioY += 1;
+    }
+    //(f%2==0 && c%2==0)
     return aleatorioY;
 }
 
+void MainWindow::generar_movimientos_enemigos(int posX, int posY)
+{
+    up_down_left_right = 1+rand()%(5-1);
+    //convención, si up_down... es igual a 1, va hacia arriba, si es igual a 2 va hacia abajo, si es igual a 3 derecha, si es igual a 4 izquierda
+    if(up_down_left_right == 1 && m ->get_value(((posY-5)/tam)-2,posX/tam)==8 && m ->get_value(((posY-5)/tam)-2,(posX+tam-1)/tam)==8){
+        enemy1[0]-> setY(enemy1[0]->y()-5); //PARA ARRIBA
+    }
+    if(up_down_left_right == 2 && m->get_value(((posY+tam-1+5)/tam)-2,(posX+tam-1)/tam)==8 && m ->get_value(((posY+tam-1+5)/tam)-2,posX/tam)==8){
+        enemy1[0]-> setY(enemy1[0]->y()+5); //PARA ABAJO
+    }
+    if(up_down_left_right == 3 && m ->get_value((posY/tam)-2,(posX+tam-1+5)/tam)==8 && m ->get_value(((posY+tam-1)/tam)-2,(posX+tam-1+5)/tam)==8){
+        enemy1[0]-> setX(enemy1[0]->x()+5); //PARA LA DERECHA
+    }
+    if(up_down_left_right == 4 && m ->get_value((posY/tam)-2,(posX-5)/tam)==8 && m ->get_value(((posY+tam-1)/tam)-2,(posX-5)/tam)==8 ){
+        enemy1[0]-> setX(enemy1[0]->x()-5);//PARA LA IZQUIERDA
+    }
+}
+
+void MainWindow::movimientos_enemigos(){
+    //desplazamientoX = generar_enemyX();
+   // desplazamientoY = generar_enemyY();
+    //desplazamientoX += 5;
+    //desplazamientoY -= 3;
+    enemy1[0]->setPos(enemy1[0]->x()+25,enemy1[0]->y()-3);
+    //timer dentro de la misma clase (modificar puntero cargado en el graphicsview)
+}
 
 /*PARA EL SEGUNDO MUNDO en generar mapa
 for (int i=0; i<cantidad_enemigos;i++){

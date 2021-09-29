@@ -48,6 +48,7 @@ public:
     void keyPressEvent(QKeyEvent *tecla);//funcion ya establecida
     int generar_enemyX();
     int generar_enemyY();
+    void generar_movimientos_enemigos(int posX, int posY);
 
 
 private:
@@ -73,7 +74,9 @@ private:
     QTimer *timer;
     //
     int desplazamientoX=0, desplazamientoY=0;
-    QTimer *time;
+    QTimer *time_enemy1;
 
+    int enemyX, enemyY;
+    int up_down_left_right;
 };
 #endif // MAINWINDOW_H
