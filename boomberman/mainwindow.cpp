@@ -156,8 +156,35 @@ void MainWindow::erase() //borrar la bomba  //TERMINAR
    explosion_[4]->set_imagen(5);
    scene->addItem(explosion_[4]);
 
-
    timer_explosion-> start(2000);
+
+   //eliminar personaje
+   if (bombX->x()+tam >= personaje_->x() && bombX->x()-tam <=personaje_->x() && bombX-> y()== personaje_->y()){
+      personaje_-> set_imagen(0,3); //establecer rutina
+      scene->removeItem(personaje_);
+   }
+   if (bombX->y()+tam >= personaje_->y() && bombX->y()-tam <=personaje_->y() && bombX-> x()== personaje_->x()){
+       personaje_-> set_imagen(0,3); //establecer rutina
+       scene->removeItem(personaje_);
+   }
+
+    Bandera=0, enemigo_bandera=0;
+
+   //eliminar enemigos
+   for (int i=0; i<cantidad_enemigos; i++){
+       if ((bombX->x()+tam >= enemy1[i]->x()-tam || bombX->x()+tam >= enemy1[i]->x()+tam ) && ( bombX->x()-tam <=enemy1[i]->x()-tam ||bombX->x()-tam <=enemy1[i]->x() +tam ) && bombX-> y()== enemy1[i]->y()){
+           //establecer rutina
+           Bandera=1;
+           enemigo_bandera=i;
+
+       }
+       if (bombX->y()+tam >= enemy1[i]->y() && bombX->y()-tam <=enemy1[i]->y() && bombX-> x()== enemy1[i]->x()){
+           enemy1[i]-> set_imagen(6); //establecer rutina
+
+           scene->removeItem(enemy1[i]);
+       }
+   }
+
 }
 
 
@@ -189,6 +216,8 @@ void MainWindow::keyPressEvent(QKeyEvent *tecla) //movimiento del personaje
        scene->addItem(bombX);
        timer->start(2000);//eliminar
        bombX->timer-> start (250);//palpitar
+
+
 
    }
 }
@@ -223,23 +252,29 @@ void MainWindow::movimientos_enemigos() //TERMINAR
    //convención, si up_down... es igual a 1, va hacia arriba, si es igual a 2 va hacia abajo, si es igual a 3 derecha, si es igual a 4 izquierda
 
     if(up_down_left_right == 1 && m ->get_value(((posY-5)/tam)-2,posX/tam)==8 && m ->get_value(((posY-5)/tam)-2,(posX+tam-1)/tam)==8){
-        enemy1[0]-> setY(enemy1[0]->y()-5); //PARA ARRIBA
+        enemy1[0]-> setY(enemy1[0]->y()-25); //PARA ARRIBA
     }
     if(up_down_left_right == 2 && m->get_value(((posY+tam-1+5)/tam)-2,(posX+tam-1)/tam)==8 && m ->get_value(((posY+tam-1+5)/tam)-2,posX/tam)==8){
-        enemy1[0]-> setY(enemy1[0]->y()+5); //PARA ABAJO
+        enemy1[0]-> setY(enemy1[0]->y()+25); //PARA ABAJO
     }
     if(up_down_left_right == 3 && m ->get_value((posY/tam)-2,(posX+tam-1+5)/tam)==8 && m ->get_value(((posY+tam-1)/tam)-2,(posX+tam-1+5)/tam)==8){
-        enemy1[0]-> setX(enemy1[0]->x()+5); //PARA LA DERECHA
+        enemy1[0]-> setX(enemy1[0]->x()+25); //PARA LA DERECHA
     }
     if(up_down_left_right == 4 && m ->get_value((posY/tam)-2,(posX-5)/tam)==8 && m ->get_value(((posY+tam-1)/tam)-2,(posX-5)/tam)==8 ){
-        enemy1[0]-> setX(enemy1[0]->x()-5);//PARA LA IZQUIERDA
+
+        enemy1[0]-> setX(enemy1[0]->x()-25);//PARA LA IZQUIERDA
     }
 }
 
 void MainWindow::erase_explosion()
 {
     timer_explosion-> stop();
-    for (int i =0; i<5 ; i++) scene->removeItem(explosion_[i]);
+    for (int i =0; i<5 ; i++) scene->removeItem(explosion_[i]);     
+    if (Bandera==1) {
+        enemy1[enemigo_bandera]-> set_imagen(6);
+        //esperar
+        scene->removeItem(enemy1[enemigo_bandera]);
+    }
 }
 
 /*PARA EL SEGUNDO MUNDO en generar mapa

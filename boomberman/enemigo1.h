@@ -14,6 +14,9 @@ private:
     QPixmap enemy1, imgn;
     int scalex = 1, scaley=1;
 
+/*public slots:
+    change_enemy();    */
+
 };
 
 #endif // ENEMIGO1_H

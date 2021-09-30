@@ -77,6 +77,8 @@ private:
     int enemyX, enemyY;
     int up_down_left_right;
 
+    int Bandera=0, enemigo_bandera=0;
+
     bool bandera=false; //saber si hay o no una bomba en la escena
 
 
