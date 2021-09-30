@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>imagenes/bloques.png</file>
+        <file>imagenes/bomba.png</file>
+        <file>imagenes/bomberman.png</file>
+        <file>imagenes/enemigo1.png</file>
+        <file>imagenes/enemigo2.png</file>
+        <file>imagenes/explosion_horizontal.png</file>
+        <file>imagenes/explosion_vertical.png</file>
+        <file>imagenes/personaje.png</file>
+        <file>imagenes/personaje_sec2.png</file>
+        <file>imagenes/personaje_sec3.png</file>
+        <file>imagenes/puerta.png</file>
+    </qresource>
+</RCC>
