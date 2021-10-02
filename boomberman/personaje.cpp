@@ -72,7 +72,7 @@ personaje::~personaje()
 
 void personaje::change_muerteP()
 {
-    set_imagen(contador,3);
-    if (contador==6)  timer_muerteP->stop();
-    contador++;
+    set_imagen(contadorMP,3);
+    if (contadorMP==5) timer_muerteP->stop();
+    contadorMP++;
 }

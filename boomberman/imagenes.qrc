@@ -11,5 +11,6 @@
         <file>imagenes/personaje_sec2.png</file>
         <file>imagenes/personaje_sec3.png</file>
         <file>imagenes/puerta.png</file>
+        <file>imagenes/muerte_enemigo1.png</file>
     </qresource>
 </RCC>

@@ -113,14 +113,6 @@ void MainWindow::change() //movimiento de la bomba
 }
 
 
-void MainWindow::change_enemies() //TERMINAR
-{
-    enemy1[cantidad_enemigos]->set_imagen(contador);
-    if (contador==2) contador=-1;
-    contador++;
-}
-
-
 void MainWindow::erase_explosion()
 {
     timer_explosion-> stop();
@@ -136,6 +128,13 @@ void MainWindow::erase() //borrar la bomba  //TERMINAR
    bombX->timer->stop();
 
    //agregar la explosion
+  // int posX= bombX->x(),  posY =bombX->y();
+
+   /*if( ((posX>2 || posX>14) && posY==0) || (posX%2==0 && posY%2==0) || (posX==29 && (posY>1 || posY>30)) ) {
+
+
+
+ }*/
    explosion_[0]->set_scale(tam,tam);
    explosion_[0]->setPos( bombX->x()-tam , bombX->y());
    explosion_[0]->set_imagen(0);
@@ -161,39 +160,43 @@ void MainWindow::erase() //borrar la bomba  //TERMINAR
    explosion_[4]->set_imagen(5);
    scene->addItem(explosion_[4]);
 
+   timer_explosion-> start(1000);
 
    //si la bomba toca al personaje-> eliminar personaje
    if ((bombX->x()+tam >= personaje_->x() -tam || bombX->x()+tam >= personaje_->x() +tam) && (bombX->x()-tam <=personaje_->x()-tam || bombX->x()-tam <=personaje_->x()+tam) && bombX-> y()== personaje_->y()){
        personaje_->activar_muerteP();
-       timer_explosion-> start(2000);
-       scene->removeItem(personaje_);
+       timer_explosion-> start(1000);
+
+      //scene->removeItem(personaje_);
       //TERMINAR JUEGO
 
    }   
    if ((bombX->y()+tam >= personaje_->y()-tam || bombX->y()+tam >= personaje_->y()+tam ) && (bombX->y()-tam <=personaje_->y()-tam || bombX->y()-tam <=personaje_->y()+tam ) && bombX-> x()== personaje_->x()){
        personaje_->activar_muerteP();
-       timer_explosion-> start(2000);
-       scene->removeItem(personaje_);
+       timer_explosion-> start(1000);
+
+       //scene->removeItem(personaje_);
       //TERMINAR JUEGO
    }
 
    //si la bomba toca al enemigo -> eliminar enemigos
-   Bandera=0, enemigo_bandera=0;
    for (int i=0; i<cantidad_enemigos; i++){
        if ((bombX->x()+tam >= enemy1[i]->x()-tam || bombX->x()+tam >= enemy1[i]->x()+tam ) && ( bombX->x()-tam <=enemy1[i]->x()-tam ||bombX->x()-tam <=enemy1[i]->x() +tam ) && bombX-> y()== enemy1[i]->y()){
+          enemy1[i]->activar_muerteE();
+          timer_explosion-> start(1000);
 
-
-
-        scene->removeItem(enemy1[i]);
+         // scene->removeItem(enemy1[i]); SI SE QUITA DE LA SCENE NO SE VE EL CAMBIO DE IMAGENES PARA LA MUERTE DEL ENEMIGO
        }
 
        if ((bombX->y()+tam >= enemy1[i]->y()-tam || bombX->y()+tam >= enemy1[i]->y()+tam) && (bombX->y()-tam <=enemy1[i]->y() -tam || bombX->y()-tam <=enemy1[i]->y() + tam ) && bombX-> x()== enemy1[i]->x()){
+           enemy1[i]->activar_muerteE();
+           timer_explosion-> start(1000);
 
+           //scene->removeItem(enemy1[i]);
 
-           scene->removeItem(enemy1[i]);
        }
    }
-   timer_explosion-> start(2000);
+
 }
 
 
@@ -223,7 +226,7 @@ void MainWindow::keyPressEvent(QKeyEvent *tecla) //movimiento del personaje
        bombX->set_scale(tam,tam);
        bombX->setPos(x,y); //xy del personaje
        scene->addItem(bombX);
-       timer->start(2000);//eliminar la bomba
+       timer->start(3000);//eliminar la bomba
        bombX->timer-> start (250);// empezar a palpitar
    }
 }
@@ -245,7 +248,7 @@ void MainWindow::generar_enemy(enemigo1 *enemigo) //crea los puntos xy aleatorio
 
     enemigo->set_scale(tam,tam);
     enemigo->setPos(aleatorioX*tam, aleatorioY*tam);
-    enemigo->set_imagen(3);
+    enemigo->set_imagen(3,1);
     scene->addItem(enemigo);
 }
 
@@ -281,12 +284,12 @@ void MainWindow::movimientos_enemigos() //TERMINAR
 
         if (enemy1[i]->x()+tam >= personaje_->x() && enemy1[i]->x()-tam <=personaje_->x() && enemy1[i]->y()== personaje_->y()){
             personaje_->activar_muerteP();
-            scene->removeItem(personaje_);
+           // scene->removeItem(personaje_);  SI SE QUITA DE LA SCENE NO SE VE EL CAMBIO DE IMAGENES PARA LA MUERTE DEL PERSONAJE
            //TERMINAR JUEGO
         }
         if (enemy1[i]->y()+tam >= personaje_->y() && enemy1[i]->y()-tam <=personaje_->y() && enemy1[i]->x()== personaje_->x()){
             personaje_->activar_muerteP();
-            scene->removeItem(personaje_);
+           // scene->removeItem(personaje_);
            //TERMINAR JUEGO
 
         }

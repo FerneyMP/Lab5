@@ -25,6 +25,7 @@ private:
     QPixmap Pprincipal, Principal_right_back, Principal_death,imgn,imgn2;
     int scalex = 1, scaley=1;
     int contador=0;//mov
+    int contadorMP=0;//muerte
 
 public slots:
     void change_muerteP();
