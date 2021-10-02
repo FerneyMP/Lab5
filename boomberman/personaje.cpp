@@ -5,6 +5,9 @@ personaje::personaje()
     Pprincipal.load(":/imagenes/personaje.png");
     Principal_right_back.load(":/imagenes/personaje_sec2.png");
     Principal_death.load(":/imagenes/personaje_sec3.png");
+
+    timer_muerteP= new QTimer;
+    connect(timer_muerteP,SIGNAL(timeout()),this,SLOT(change_muerteP()));
 }
 
 void personaje::set_imagen(int a,int b)
@@ -55,4 +58,21 @@ void personaje::change(char Tecla)
        }
        contador++;
 
+}
+
+void personaje::activar_muerteP()
+{
+    timer_muerteP->start(350);
+}
+
+personaje::~personaje()
+{
+
+}
+
+void personaje::change_muerteP()
+{
+    set_imagen(contador,3);
+    if (contador==6)  timer_muerteP->stop();
+    contador++;
 }

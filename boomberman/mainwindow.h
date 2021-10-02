@@ -19,7 +19,7 @@
 
 //DIMENSIONES DE MI MAPA:
 #define filas 13 //para el mapa
-#define columnas 31 //tamaño del mapa fil y col 31
+#define columnas 27 //tamaño del mapa fil y col 31
 #define tam 50 //50 pixeles
 #define cantidad_enemigos 10
 
@@ -33,6 +33,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public slots:
+
     void change(); //cambio de imagen para el movimiento de la bomba
     void change_enemies(); //cambio de imagen para el movimiento de los enemigos
     void erase(); //borrar bomba
@@ -40,6 +41,7 @@ public slots:
     void erase_explosion(); //borrar explosion
 
 public:
+
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -52,6 +54,7 @@ public:
 
 
 private:
+
     Ui::MainWindow *ui;
 
     bloques *puntaje,***mapa;

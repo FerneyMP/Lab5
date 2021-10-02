@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) //MainWindow modifica la interfaz princi
 {
     ui->setupUi(this);
 
-    timer = new QTimer; //timer para el change
+    timer = new QTimer; //timer para el change (palpitar bomba)
     timer_explosion = new QTimer; //timer para la explosion
     time_enemy1 = new QTimer; //timer para el enemigo
     bombX = new bomba;
@@ -22,19 +22,15 @@ MainWindow::MainWindow(QWidget *parent) //MainWindow modifica la interfaz princi
     connect(timer_explosion,SIGNAL(timeout()),this,SLOT(erase_explosion()));
     connect(time_enemy1,SIGNAL(timeout()),this,SLOT(movimientos_enemigos()));
 
-    //time_enemy1->start(2000);
-    //Se le agregan las dimensiones del graphicsView
-    ui->graphicsView->setGeometry(0,0,tam*columnas+2,tam*(filas+2)+2);
-    //se le definen dimensiones
-    scene->setSceneRect(0,0,tam*columnas,tam*(filas+2));
-    //se carga la escena
-    ui->graphicsView->setScene(scene);
-    //se escala interfaz principal
-    setFixedSize(tam*columnas+2,tam*(filas+2)+2);
+
+    ui->graphicsView->setGeometry(0,0,tam*columnas+2,tam*(filas+2)+2); //Se le agregan las dimensiones del graphicsView
+    scene->setSceneRect(0,0,tam*columnas,tam*(filas+2));//se le definen dimensiones
+    ui->graphicsView->setScene(scene); //se carga la escena
+    setFixedSize(tam*columnas+2,tam*(filas+2)+2); //se escala interfaz principal
     setWindowTitle("Bomberman");
-    //agregar icono
 
     srand(time(NULL)); //crear la semilla para el # aleatorio
+
     generar_mapa();
 
 }
@@ -96,6 +92,7 @@ void MainWindow::generar_mapa()
     time_enemy1->start(1000);
 }
 
+
 void MainWindow::inicializar() //Inicializar un puntero a un arreglo de punteros
 {
     mapa = new bloques** [filas]; //nuevo arreglo a un puntero de bloques de filas posiciones
@@ -122,6 +119,14 @@ void MainWindow::change_enemies() //TERMINAR
     if (contador==2) contador=-1;
     contador++;
 }
+
+
+void MainWindow::erase_explosion()
+{
+    timer_explosion-> stop();
+    for (int i =0; i<5 ; i++) scene->removeItem(explosion_[i]);
+}
+
 
 void MainWindow::erase() //borrar la bomba  //TERMINAR
 {
@@ -156,45 +161,49 @@ void MainWindow::erase() //borrar la bomba  //TERMINAR
    explosion_[4]->set_imagen(5);
    scene->addItem(explosion_[4]);
 
-   timer_explosion-> start(2000);
 
-   //eliminar personaje
-   if (bombX->x()+tam >= personaje_->x() && bombX->x()-tam <=personaje_->x() && bombX-> y()== personaje_->y()){
-      personaje_-> set_imagen(0,3); //establecer rutina
-      scene->removeItem(personaje_);
-   }
-   if (bombX->y()+tam >= personaje_->y() && bombX->y()-tam <=personaje_->y() && bombX-> x()== personaje_->x()){
-       personaje_-> set_imagen(0,3); //establecer rutina
+   //si la bomba toca al personaje-> eliminar personaje
+   if ((bombX->x()+tam >= personaje_->x() -tam || bombX->x()+tam >= personaje_->x() +tam) && (bombX->x()-tam <=personaje_->x()-tam || bombX->x()-tam <=personaje_->x()+tam) && bombX-> y()== personaje_->y()){
+       personaje_->activar_muerteP();
+       timer_explosion-> start(2000);
        scene->removeItem(personaje_);
+      //TERMINAR JUEGO
+
+   }   
+   if ((bombX->y()+tam >= personaje_->y()-tam || bombX->y()+tam >= personaje_->y()+tam ) && (bombX->y()-tam <=personaje_->y()-tam || bombX->y()-tam <=personaje_->y()+tam ) && bombX-> x()== personaje_->x()){
+       personaje_->activar_muerteP();
+       timer_explosion-> start(2000);
+       scene->removeItem(personaje_);
+      //TERMINAR JUEGO
    }
 
-    Bandera=0, enemigo_bandera=0;
-
-   //eliminar enemigos
+   //si la bomba toca al enemigo -> eliminar enemigos
+   Bandera=0, enemigo_bandera=0;
    for (int i=0; i<cantidad_enemigos; i++){
        if ((bombX->x()+tam >= enemy1[i]->x()-tam || bombX->x()+tam >= enemy1[i]->x()+tam ) && ( bombX->x()-tam <=enemy1[i]->x()-tam ||bombX->x()-tam <=enemy1[i]->x() +tam ) && bombX-> y()== enemy1[i]->y()){
-           //establecer rutina
-           Bandera=1;
-           enemigo_bandera=i;
 
+
+
+        scene->removeItem(enemy1[i]);
        }
-       if (bombX->y()+tam >= enemy1[i]->y() && bombX->y()-tam <=enemy1[i]->y() && bombX-> x()== enemy1[i]->x()){
-           enemy1[i]-> set_imagen(6); //establecer rutina
+
+       if ((bombX->y()+tam >= enemy1[i]->y()-tam || bombX->y()+tam >= enemy1[i]->y()+tam) && (bombX->y()-tam <=enemy1[i]->y() -tam || bombX->y()-tam <=enemy1[i]->y() + tam ) && bombX-> x()== enemy1[i]->x()){
+
 
            scene->removeItem(enemy1[i]);
        }
    }
-
+   timer_explosion-> start(2000);
 }
 
 
 void MainWindow::keyPressEvent(QKeyEvent *tecla) //movimiento del personaje
 {
-   int x =personaje_->x(), y=personaje_->y();
+   int x =personaje_->x(), y=personaje_->y(); //posicion xy del personaje
 
    if (tecla-> key() == Qt:: Key_D && m ->get_value((y/tam)-2,(x+tam-1+5)/tam)==8 && m ->get_value(((y+tam-1)/tam)-2,(x+tam-1+5)/tam)==8) { //sup e inf der
-       personaje_-> change('d');
-       personaje_-> setX(personaje_->x()+5);
+       personaje_-> change('d'); //cambio de imagen
+       personaje_-> setX(personaje_->x()+5); //mover 5 pasos de la posicion original
    }
    if (tecla-> key() == Qt:: Key_W && m ->get_value(((y-5)/tam)-2,x/tam)==8 && m ->get_value(((y-5)/tam)-2,(x+tam-1)/tam)==8) {  //arr
     personaje_-> change('w');
@@ -214,11 +223,8 @@ void MainWindow::keyPressEvent(QKeyEvent *tecla) //movimiento del personaje
        bombX->set_scale(tam,tam);
        bombX->setPos(x,y); //xy del personaje
        scene->addItem(bombX);
-       timer->start(2000);//eliminar
-       bombX->timer-> start (250);//palpitar
-
-
-
+       timer->start(2000);//eliminar la bomba
+       bombX->timer-> start (250);// empezar a palpitar
    }
 }
 
@@ -230,10 +236,12 @@ void MainWindow::generar_enemy(enemigo1 *enemigo) //crea los puntos xy aleatorio
     //esta información va dentro de SetPos
 
     do{
-        aleatorioX = rand()%(columnas-2)+1; //(HASTA-DESDE +1)+DESDE
-        aleatorioY = rand()%(filas-4)+3;
+        //(HASTA-DESDE +1)+DESDE
+        aleatorioX = rand()%(columnas-2)+1; //# 1 a 25
+        aleatorioY = rand()%(filas-4)+3; //# 3 a 11
 
     } while(m->get_value(aleatorioY-2,aleatorioX) !=8 || (aleatorioX==1 && aleatorioY ==3) || (aleatorioX==2 && aleatorioY ==3) || (aleatorioX==1 && aleatorioY ==4) );
+    //posicionarse en espacios diferentes a el fondo, el espacio del jugador y sus alrededores
 
     enemigo->set_scale(tam,tam);
     enemigo->setPos(aleatorioX*tam, aleatorioY*tam);
@@ -264,18 +272,40 @@ void MainWindow::movimientos_enemigos() //TERMINAR
 
         enemy1[0]-> setX(enemy1[0]->x()-25);//PARA LA IZQUIERDA
     }
-}
 
-void MainWindow::erase_explosion()
-{
-    timer_explosion-> stop();
-    for (int i =0; i<5 ; i++) scene->removeItem(explosion_[i]);     
-    if (Bandera==1) {
-        enemy1[enemigo_bandera]-> set_imagen(6);
-        //esperar
-        scene->removeItem(enemy1[enemigo_bandera]);
+    //si el personaje toca al enemigo -> eliminar personaje
+    for (int i=0; i<cantidad_enemigos; i++){
+
+        //((bombX->x()+tam >= personaje_->x() -tam || bombX->x()+tam >= personaje_->x() +tam) && (bombX->x()-tam <=personaje_->x()-tam || bombX->x()-tam <=personaje_->x()+tam) && bombX-> y()== personaje_->y()){
+
+
+        if (enemy1[i]->x()+tam >= personaje_->x() && enemy1[i]->x()-tam <=personaje_->x() && enemy1[i]->y()== personaje_->y()){
+            personaje_->activar_muerteP();
+            scene->removeItem(personaje_);
+           //TERMINAR JUEGO
+        }
+        if (enemy1[i]->y()+tam >= personaje_->y() && enemy1[i]->y()-tam <=personaje_->y() && enemy1[i]->x()== personaje_->x()){
+            personaje_->activar_muerteP();
+            scene->removeItem(personaje_);
+           //TERMINAR JUEGO
+
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*PARA EL SEGUNDO MUNDO en generar mapa
 for (int i=0; i<cantidad_enemigos;i++){

@@ -3,9 +3,7 @@
 bomba::bomba()
 {
     bomb.load(":/imagenes/bomba.png");
-
     timer = new QTimer();
-
     connect(timer,SIGNAL(timeout()),this,SLOT(change()));//change, funcion para cambiar de imagen y generar el mov
 }
 
